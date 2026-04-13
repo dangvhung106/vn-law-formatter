@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-kaitoke: #004F26;
+  --color-deepsea: #007D68;
+  --color-deepsea-hover: #006655;
+  --color-softcloud: #f8f9fa;
+  --color-dove: #666666;
+  --color-actionblue: #1a56db;
+}
