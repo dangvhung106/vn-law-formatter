@@ -125,6 +125,12 @@ export async function parseDocxToMarkdown(arrayBuffer: ArrayBuffer): Promise<str
       continue;
     }
 
+    // Single Vietnamese letter heading (a, b, c, d, đ, e, g, h, i, k, l, m, n, o, p, q, r, s, t, u, v, x, y)
+    if (/^[abcdđeghiklmnopqrstuvxy]\)\s/i.test(text)) {
+      markdown += `##### ${text}\n\n`;
+      continue;
+    }
+
     // Handle Definitions
     if (inDefinitions && /^\d+\.\s/.test(text)) {
       const match = text.match(/^(\d+\.\s+)(.*?)(là\s+.*)$/);
