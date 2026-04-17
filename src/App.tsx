@@ -3,6 +3,7 @@ import { FileUpload } from './components/FileUpload';
 import { MarkdownEditor } from './components/MarkdownEditor';
 import { parseDocxToMarkdown } from './lib/parser';
 import { Scale, Loader2, ArrowLeft } from 'lucide-react';
+import { ApiKeySettings } from './components/ApiKeySettings';
 
 export default function App() {
   const [markdown, setMarkdown] = useState<string | null>(null);
@@ -41,15 +42,18 @@ export default function App() {
               VN Law Formatter
             </h1>
           </div>
-          {markdown && (
-            <button
-              onClick={reset}
-              className="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Chuyển đổi file khác
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            {markdown && (
+              <button
+                onClick={reset}
+                className="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Chuyển đổi file khác
+              </button>
+            )}
+            <ApiKeySettings />
+          </div>
         </div>
       </header>
 

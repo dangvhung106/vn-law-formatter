@@ -103,6 +103,11 @@ export async function parseDocxToMarkdown(arrayBuffer: ArrayBuffer): Promise<str
     }
 
     // Handle Headings
+    if (/^Phụ lục\s+(\d+|[IVXLCDM]+)\b/i.test(text)) {
+      markdown += `## ${text}\n\n`;
+      continue;
+    }
+
     if (/^Chương\s+[IVXLCDM]+/i.test(text)) {
       if (!isFirstChapter) markdown += '\n---\n\n';
       isFirstChapter = false;
@@ -125,19 +130,21 @@ export async function parseDocxToMarkdown(arrayBuffer: ArrayBuffer): Promise<str
       continue;
     }
 
+    // Khoản: natural number followed by dot and space (1. 2. 10. etc.)
+    if (/^\d+\.\s/.test(text)) {
+      let content = text;
+      if (inDefinitions) {
+        const match = text.match(/^(\d+\.\s+)(.*?)(là\s+.*)$/);
+        if (match) content = `${match[1]}**${match[2].trim()}** ${match[3]}`;
+      }
+      markdown += `#### ${content}\n\n`;
+      continue;
+    }
+
     // Single Vietnamese letter heading (a, b, c, d, đ, e, g, h, i, k, l, m, n, o, p, q, r, s, t, u, v, x, y)
     if (/^[abcdđeghiklmnopqrstuvxy]\)\s/i.test(text)) {
       markdown += `##### ${text}\n\n`;
       continue;
-    }
-
-    // Handle Definitions
-    if (inDefinitions && /^\d+\.\s/.test(text)) {
-      const match = text.match(/^(\d+\.\s+)(.*?)(là\s+.*)$/);
-      if (match) {
-        markdown += `${match[1]}**${match[2].trim()}** ${match[3]}\n\n`;
-        continue;
-      }
     }
 
     // Handle Amendments
